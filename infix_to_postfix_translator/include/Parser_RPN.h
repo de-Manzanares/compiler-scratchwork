@@ -19,6 +19,7 @@ class Parser {
   value _current{}; ///< current token
   Token _lookahead; ///< predictive parser -- no backtracking
   std::vector<Token> _tokens;
+  int _parentheses{};
   void expr();   ///< production in syntax directed translation scheme
   void term();   ///< production in syntax directed translation scheme
   void factor(); ///< production in syntax directed translation scheme

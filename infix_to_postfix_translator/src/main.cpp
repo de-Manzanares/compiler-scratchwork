@@ -47,10 +47,19 @@ int main(const int argc, const char *argv[]) {
     std::cout << "To convert a file : ./hatchling [file]\n";
     std::cout << "To enter REPL mode: ./hatchling \n";
   } else if (argc > 1) {
-    Hatchling::run_file(argv[1]);
+    try {
+      Hatchling::run_file(argv[1]);
+    } catch (std::runtime_error &e) {
+      //
+    }
   } else {
-    Hatchling hatchling;
-    hatchling.run_repl();
+    while (true) {
+      try {
+        Hatchling hatchling;
+        hatchling.run_repl();
+      } catch (std::runtime_error &e) {
+      }
+    }
   }
   return EXIT_SUCCESS;
 }

@@ -63,6 +63,16 @@ void Parser::factor() { // NOLINT
     expr();
     match(Token_Type::RIGHT_PAREN);
     break;
+  case Token_Type::RIGHT_PAREN: // encounter a right paren before a left paren
+  {
+    if (_parentheses <= 0) {
+      error("\nsyntax error: missing '(', unexpected ')'");
+      throw std::runtime_error("\nsyntax error: missing '(', unexpected ')'");
+    }
+    if (_parentheses == 1) {
+      error("\nsyntax error: empty parentheses \"()\"");
+    }
+  }
   case Token_Type::ID:
     emit(_lookahead.lexeme());
     match(Token_Type::ID);
@@ -72,17 +82,27 @@ void Parser::factor() { // NOLINT
     match(Token_Type::NUM);
     break;
   default:
-    error("syntax error");
+    error("\nsyntax error: unexpected", '"', _lookahead.lexeme(), '"');
   }
 }
 
 void Parser::match(Token_Type const tt) {
   if (_lookahead.token_type() == tt) {
-    if (tt == Token_Type::SEMICOLON) { // one expression per line
+    if (tt == Token_Type::SEMICOLON) { // print one expression per line
       std::cout << '\n';
+    } else if (tt == Token_Type::LEFT_PAREN) {
+      ++_parentheses;
+    } else if (tt == Token_Type::RIGHT_PAREN) {
+      --_parentheses;
     }
     _lookahead = _tokens[++_current];
   } else {
-    error("syntax error");
+    if (tt == Token_Type::SEMICOLON) {
+      error("\nsyntax error: missing ';' at end of statement");
+    } else if (tt == Token_Type::RIGHT_PAREN) {
+      error("\nsyntax error: missing ')'");
+    } else {
+      error("\nsyntax error: unexpected ", '"', _lookahead.lexeme(), '"');
+    }
   }
 }
