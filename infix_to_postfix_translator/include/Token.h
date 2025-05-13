@@ -1,8 +1,9 @@
 #ifndef INCLUDE_TOKEN_H_
 #define INCLUDE_TOKEN_H_
+#include <cstdint>
 #include <string>
 
-using value = uint64_t;
+using value = std::uint64_t;
 
 enum class Token_Type {
   NILL,

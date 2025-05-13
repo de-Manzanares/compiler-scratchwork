@@ -1,6 +1,6 @@
 <div align='center'>
 
-## Hatchling
+## Infix to postfix translator
 
 </div>
 

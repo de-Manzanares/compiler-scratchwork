@@ -1,11 +1,8 @@
 cmake_minimum_required(VERSION 3.28)
-project(Hatchling)
 
-set(CMAKE_CXX_STANDARD 23)
+project(compiler-scratchwork)
 
-add_executable(hatchling
-        infix_to_postfix_translator/src/main.cpp
-        infix_to_postfix_translator/src/Token.cpp
-        infix_to_postfix_translator/src/Lexer.cpp
-        infix_to_postfix_translator/src/Parser_RPN.cpp)
-target_include_directories(hatchling PRIVATE infix_to_postfix_translator/include)
+set(CMAKE_CXX_STANDARD 17)
+
+add_subdirectory(infix_to_postfix_translator)
+

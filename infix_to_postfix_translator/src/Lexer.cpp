@@ -2,7 +2,9 @@
 
 #include "error.hpp"
 
+#include <algorithm>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -54,32 +56,19 @@ void Lexer::lex_token() {
   switch (unsigned char const ch = _str[_current++]) {
   case ' ': // ignore whitespaces
   case '\r':
-  case '\t':
-    break;
+  case '\t': break;
   case '\n': // count line
     _line++;
     break;
   case '(': // single character tokens
     push_token(tt::LEFT_PAREN);
     break;
-  case ')':
-    push_token(tt::RIGHT_PAREN);
-    break;
-  case '+':
-    push_token(tt::PLUS);
-    break;
-  case '-':
-    push_token(tt::MINUS);
-    break;
-  case '*':
-    push_token(tt::STAR);
-    break;
-  case '/':
-    push_token(tt::SLASH);
-    break;
-  case ';':
-    push_token(tt::SEMICOLON);
-    break;
+  case ')': push_token(tt::RIGHT_PAREN); break;
+  case '+': push_token(tt::PLUS); break;
+  case '-': push_token(tt::MINUS); break;
+  case '*': push_token(tt::STAR); break;
+  case '/': push_token(tt::SLASH); break;
+  case ';': push_token(tt::SEMICOLON); break;
 
   default: {
     if (std::isdigit(ch)) { // we only deal with single digits
@@ -111,7 +100,10 @@ void Lexer::keyword_or_id() {
     ++_current; // read to the end of word
   }
   if (const std::string lexeme = _str.substr(_start, _current - _start);
-      !keywords.contains(lexeme)) {
+      // !keywords.contains(lexeme)) {
+      std::find_if(keywords.begin(), keywords.end(), [=](const auto x) {
+        return x.first == lexeme;
+      }) != keywords.end()) {
     push_token(Token_Type::ID);
   } else {
     push_token(keywords[lexeme]);
