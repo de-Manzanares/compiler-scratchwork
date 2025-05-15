@@ -1,0 +1,11 @@
+add_executable(itp)
+target_sources(
+        itp
+        PRIVATE
+        main.c
+)
+target_link_libraries(
+        itp
+        PRIVATE
+        common-options
+)
