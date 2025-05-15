@@ -43,5 +43,4 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_link_options(common-options INTERFACE ${LIBCXXLinkerOptions})
 endif ()
 
-add_subdirectory(infix_to_postfix_translator_c)
 add_subdirectory(infix_to_postfix_translator_cpp)
